@@ -7,12 +7,12 @@ const { id } = Astro.props;
   class="mt-[60px] text-white text-center px-5 relative overflow-hidden max-md:mt-[50px] max-md:px-4"
   style="min-height: 85vh; display: flex; align-items: center;"
 >
-  <div class="absolute inset-0 bg-cover bg-no-repeat scale-105" style="background-image: url('/images/image_background.jpg'); background-position: center 30%;"></div>
+  <div class="absolute inset-0 bg-cover bg-no-repeat scale-105 hero-bg"></div>
   <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50"></div>
   <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(60,60,60,0.15)_0%,transparent_60%)]"></div>
   <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/40 to-transparent"></div>
 
-  <div class="max-w-[1200px] mx-auto px-5 relative z-10 mt-96">
+  <div class="max-w-[1200px] mx-auto px-5 relative z-10 mt-96 max-md:mt-48">
     <div class="w-20 h-[3px] mx-auto mb-6 rounded-full hero-fade-up" style="background: linear-gradient(90deg, #B8860B, #FFD700, #B8860B);"></div>
     <h1 class="font-body text-4xl font-bold max-md:text-2xl hero-fade-up hero-text-gold" style="animation-delay: 0.15s">
       Indumentaria y accesorios premium para mascotas
@@ -26,6 +26,16 @@ const { id } = Astro.props;
 </section>
 
 <style>
+  .hero-bg {
+    background-image: url('/images/image_background.jpg');
+    background-position: center 30%;
+  }
+  @media (max-width: 768px) {
+    .hero-bg {
+      background-position: center 40%;
+      background-size: auto 100%;
+    }
+  }
   @keyframes fadeUp {
     from {
       opacity: 0;
