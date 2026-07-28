@@ -59,11 +59,8 @@ if (!category) {
                   </div>
                 )}
                 <div class="mt-auto flex flex-col items-center gap-3 pt-3 border-t border-gray-100">
-                  {product.stock !== undefined && product.stock < 5 && product.stock > 0 && (
-                    <p class="text-xs text-yellow-600 font-semibold">Últimas {product.stock} unidades</p>
-                  )}
                   {product.stock !== undefined && product.stock === 0 && (
-                    <p class="text-xs text-red-500 font-semibold">Sin stock</p>
+                    <p class="text-xs text-red-500 font-semibold">Consultar disponibilidad</p>
                   )}
                   <div class="flex gap-2 w-full">
                     <a
@@ -125,8 +122,8 @@ if (!category) {
         "offers": {
           "@type": "Offer",
           "availability": product.stock === 0 ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
+          "price": "Consultar",
           "priceCurrency": "ARS",
-          "price": "0",
           "seller": {
             "@type": "Organization",
             "name": "Milo Ideas"
