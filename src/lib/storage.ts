@@ -38,21 +38,14 @@ function writeJsonFile(data: StoreData): void {
 async function ensureSeeded(): Promise<void> {
   if (!isSupabaseConfigured() || isSeeded()) return
   try {
-    const { count } = await supabase.from('categories').select('*', { count: 'exact', head: true })
-    if (count && count > 0) { markSeeded(); return }
-  } catch (e) {
-    console.error('ensureSeeded check failed:', e)
-    return
-  }
-  try {
-    await supabase.from('categories').upsert(seedData.categories, { onConflict: 'slug' })
-    await supabase.from('products').upsert(seedData.products as never[], { onConflict: 'id' })
+    await supabase.from('categories').upsert(seedData.categories as never[], { onConflict: 'slug', ignoreDuplicates: true })
+    await supabase.from('products').upsert(seedData.products as never[], { onConflict: 'id', ignoreDuplicates: true })
     const slides = (seedData as StoreData).carouselSlides
-    if (slides) await supabase.from('carousel_slides').upsert(slides, { onConflict: 'id' })
-    markSeeded()
+    if (slides) await supabase.from('carousel_slides').upsert(slides as never[], { onConflict: 'id', ignoreDuplicates: true })
   } catch (e) {
-    console.error('ensureSeeded insert failed:', e)
+    console.error('ensureSeeded failed:', e)
   }
+  markSeeded()
 }
 
 export async function getAllProducts(): Promise<Product[]> {
