@@ -1,9 +1,9 @@
-import { kv } from '@vercel/kv';
+import { supabase } from './supabase';
+import type { Product, Category, CarouselSlide } from '../data/productos';
+import seedData from '../data/productos.json';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import type { Product, Category, CarouselSlide } from '../data/productos';
-import seedData from '../data/productos.json';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,8 +15,8 @@ type StoreData = {
   carouselSlides: CarouselSlide[];
 };
 
-function isVercelKvConfigured(): boolean {
-  return !!(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN);
+function isSupabaseConfigured(): boolean {
+  return !!(process.env.SUPABASE_URL && (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY));
 }
 
 function readJsonFile(): StoreData {
@@ -34,43 +34,49 @@ function writeJsonFile(data: StoreData): void {
   } catch {}
 }
 
-async function seedKvIfEmpty(): Promise<StoreData> {
+async function ensureSeeded(): Promise<void> {
   try {
-    const existing = await kv.get<StoreData>('products');
-    if (existing) return existing;
-    await kv.set('products', seedData);
-    return seedData as StoreData;
-  } catch {
-    const file = readJsonFile();
-    return file;
-  }
+    const { count } = await supabase.from('categories').select('*', { count: 'exact', head: true });
+    if (count && count > 0) return;
+    await supabase.from('categories').insert(seedData.categories as never[]);
+    await supabase.from('products').insert(seedData.products as never[]);
+    const slides = (seedData as StoreData).carouselSlides;
+    if (slides) await supabase.from('carousel_slides').insert(slides as never[]);
+  } catch {}
 }
 
 export async function getAllProducts(): Promise<Product[]> {
-  if (isVercelKvConfigured()) {
-    const data = await seedKvIfEmpty();
-    return data.products;
+  if (isSupabaseConfigured()) {
+    await ensureSeeded();
+    const { data } = await supabase.from('products').select('*');
+    return (data || []) as Product[];
   }
-  const file = readJsonFile();
-  return file.products;
+  return readJsonFile().products;
 }
 
 export async function getProductById(id: string): Promise<Product | null> {
-  const products = await getAllProducts();
+  if (isSupabaseConfigured()) {
+    await ensureSeeded();
+    const { data } = await supabase.from('products').select('*').eq('id', id).maybeSingle();
+    return data as Product | null;
+  }
+  const products = readJsonFile().products;
   return products.find(p => p.id === id) || null;
 }
 
 export async function getProductsByCategory(slug: string): Promise<Product[]> {
-  const products = await getAllProducts();
-  return products.filter(p => p.categorySlug === slug);
+  if (isSupabaseConfigured()) {
+    await ensureSeeded();
+    const { data } = await supabase.from('products').select('*').eq('categorySlug', slug);
+    return (data || []) as Product[];
+  }
+  return readJsonFile().products.filter(p => p.categorySlug === slug);
 }
 
 export async function createProduct(product: Product): Promise<Product> {
-  if (isVercelKvConfigured()) {
-    const data = await seedKvIfEmpty();
-    data.products.push(product);
-    await kv.set('products', data);
-    return product;
+  if (isSupabaseConfigured()) {
+    const { data } = await supabase.from('products').insert(product as never).select().single();
+    return data as Product;
   }
   const data = readJsonFile();
   data.products.push(product);
@@ -79,13 +85,9 @@ export async function createProduct(product: Product): Promise<Product> {
 }
 
 export async function updateProduct(id: string, updates: Partial<Product>): Promise<Product | null> {
-  if (isVercelKvConfigured()) {
-    const data = await seedKvIfEmpty();
-    const idx = data.products.findIndex(p => p.id === id);
-    if (idx === -1) return null;
-    data.products[idx] = { ...data.products[idx], ...updates };
-    await kv.set('products', data);
-    return data.products[idx];
+  if (isSupabaseConfigured()) {
+    const { data } = await supabase.from('products').update(updates as never).eq('id', id).select().single();
+    return data as Product | null;
   }
   const data = readJsonFile();
   const idx = data.products.findIndex(p => p.id === id);
@@ -96,13 +98,9 @@ export async function updateProduct(id: string, updates: Partial<Product>): Prom
 }
 
 export async function deleteProduct(id: string): Promise<boolean> {
-  if (isVercelKvConfigured()) {
-    const data = await seedKvIfEmpty();
-    const len = data.products.length;
-    data.products = data.products.filter(p => p.id !== id);
-    if (data.products.length === len) return false;
-    await kv.set('products', data);
-    return true;
+  if (isSupabaseConfigured()) {
+    const { error } = await supabase.from('products').delete().eq('id', id);
+    return !error;
   }
   const data = readJsonFile();
   const len = data.products.length;
@@ -113,25 +111,27 @@ export async function deleteProduct(id: string): Promise<boolean> {
 }
 
 export async function getAllCategories(): Promise<Category[]> {
-  if (isVercelKvConfigured()) {
-    const data = await seedKvIfEmpty();
-    return data.categories;
+  if (isSupabaseConfigured()) {
+    await ensureSeeded();
+    const { data } = await supabase.from('categories').select('*');
+    return (data || []) as Category[];
   }
-  const file = readJsonFile();
-  return file.categories;
+  return readJsonFile().categories;
 }
 
 export async function getCategoryBySlug(slug: string): Promise<Category | null> {
-  const categories = await getAllCategories();
-  return categories.find(c => c.slug === slug) || null;
+  if (isSupabaseConfigured()) {
+    await ensureSeeded();
+    const { data } = await supabase.from('categories').select('*').eq('slug', slug).maybeSingle();
+    return data as Category | null;
+  }
+  return readJsonFile().categories.find(c => c.slug === slug) || null;
 }
 
 export async function createCategory(category: Category): Promise<Category> {
-  if (isVercelKvConfigured()) {
-    const data = await seedKvIfEmpty();
-    data.categories.push(category);
-    await kv.set('products', data);
-    return category;
+  if (isSupabaseConfigured()) {
+    const { data } = await supabase.from('categories').insert(category as never).select().single();
+    return data as Category;
   }
   const data = readJsonFile();
   data.categories.push(category);
@@ -140,13 +140,9 @@ export async function createCategory(category: Category): Promise<Category> {
 }
 
 export async function updateCategory(slug: string, updates: Partial<Category>): Promise<Category | null> {
-  if (isVercelKvConfigured()) {
-    const data = await seedKvIfEmpty();
-    const idx = data.categories.findIndex(c => c.slug === slug);
-    if (idx === -1) return null;
-    data.categories[idx] = { ...data.categories[idx], ...updates };
-    await kv.set('products', data);
-    return data.categories[idx];
+  if (isSupabaseConfigured()) {
+    const { data } = await supabase.from('categories').update(updates as never).eq('slug', slug).select().single();
+    return data as Category | null;
   }
   const data = readJsonFile();
   const idx = data.categories.findIndex(c => c.slug === slug);
@@ -157,13 +153,9 @@ export async function updateCategory(slug: string, updates: Partial<Category>): 
 }
 
 export async function deleteCategory(slug: string): Promise<boolean> {
-  if (isVercelKvConfigured()) {
-    const data = await seedKvIfEmpty();
-    const len = data.categories.length;
-    data.categories = data.categories.filter(c => c.slug !== slug);
-    if (data.categories.length === len) return false;
-    await kv.set('products', data);
-    return true;
+  if (isSupabaseConfigured()) {
+    const { error } = await supabase.from('categories').delete().eq('slug', slug);
+    return !error;
   }
   const data = readJsonFile();
   const len = data.categories.length;
@@ -174,26 +166,27 @@ export async function deleteCategory(slug: string): Promise<boolean> {
 }
 
 export async function getAllSlides(): Promise<CarouselSlide[]> {
-  if (isVercelKvConfigured()) {
-    const data = await seedKvIfEmpty();
-    return (data.carouselSlides || []).sort((a, b) => a.order - b.order);
+  if (isSupabaseConfigured()) {
+    await ensureSeeded();
+    const { data } = await supabase.from('carousel_slides').select('*').order('order');
+    return (data || []) as CarouselSlide[];
   }
-  const file = readJsonFile();
-  return (file.carouselSlides || []).sort((a, b) => a.order - b.order);
+  return (readJsonFile().carouselSlides || []).sort((a, b) => a.order - b.order);
 }
 
 export async function getSlideById(id: string): Promise<CarouselSlide | null> {
-  const slides = await getAllSlides();
-  return slides.find(s => s.id === id) || null;
+  if (isSupabaseConfigured()) {
+    await ensureSeeded();
+    const { data } = await supabase.from('carousel_slides').select('*').eq('id', id).maybeSingle();
+    return data as CarouselSlide | null;
+  }
+  return (readJsonFile().carouselSlides || []).find(s => s.id === id) || null;
 }
 
 export async function createSlide(slide: CarouselSlide): Promise<CarouselSlide> {
-  if (isVercelKvConfigured()) {
-    const data = await seedKvIfEmpty();
-    if (!data.carouselSlides) data.carouselSlides = [];
-    data.carouselSlides.push(slide);
-    await kv.set('products', data);
-    return slide;
+  if (isSupabaseConfigured()) {
+    const { data } = await supabase.from('carousel_slides').insert(slide as never).select().single();
+    return data as CarouselSlide;
   }
   const data = readJsonFile();
   if (!data.carouselSlides) data.carouselSlides = [];
@@ -203,14 +196,9 @@ export async function createSlide(slide: CarouselSlide): Promise<CarouselSlide> 
 }
 
 export async function updateSlide(id: string, updates: Partial<CarouselSlide>): Promise<CarouselSlide | null> {
-  if (isVercelKvConfigured()) {
-    const data = await seedKvIfEmpty();
-    if (!data.carouselSlides) return null;
-    const idx = data.carouselSlides.findIndex(s => s.id === id);
-    if (idx === -1) return null;
-    data.carouselSlides[idx] = { ...data.carouselSlides[idx], ...updates };
-    await kv.set('products', data);
-    return data.carouselSlides[idx];
+  if (isSupabaseConfigured()) {
+    const { data } = await supabase.from('carousel_slides').update(updates as never).eq('id', id).select().single();
+    return data as CarouselSlide | null;
   }
   const data = readJsonFile();
   if (!data.carouselSlides) return null;
@@ -222,14 +210,9 @@ export async function updateSlide(id: string, updates: Partial<CarouselSlide>): 
 }
 
 export async function deleteSlide(id: string): Promise<boolean> {
-  if (isVercelKvConfigured()) {
-    const data = await seedKvIfEmpty();
-    if (!data.carouselSlides) return false;
-    const len = data.carouselSlides.length;
-    data.carouselSlides = data.carouselSlides.filter(s => s.id !== id);
-    if (data.carouselSlides.length === len) return false;
-    await kv.set('products', data);
-    return true;
+  if (isSupabaseConfigured()) {
+    const { error } = await supabase.from('carousel_slides').delete().eq('id', id);
+    return !error;
   }
   const data = readJsonFile();
   if (!data.carouselSlides) return false;
