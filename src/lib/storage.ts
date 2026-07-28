@@ -40,12 +40,19 @@ async function ensureSeeded(): Promise<void> {
   try {
     const { count } = await supabase.from('categories').select('*', { count: 'exact', head: true })
     if (count && count > 0) { markSeeded(); return }
-    await supabase.from('categories').insert(seedData.categories)
-    await supabase.from('products').insert(seedData.products)
+  } catch (e) {
+    console.error('ensureSeeded check failed:', e)
+    return
+  }
+  try {
+    await supabase.from('categories').upsert(seedData.categories, { onConflict: 'slug' })
+    await supabase.from('products').upsert(seedData.products as never[], { onConflict: 'id' })
     const slides = (seedData as StoreData).carouselSlides
-    if (slides) await supabase.from('carousel_slides').insert(slides)
+    if (slides) await supabase.from('carousel_slides').upsert(slides, { onConflict: 'id' })
     markSeeded()
-  } catch {}
+  } catch (e) {
+    console.error('ensureSeeded insert failed:', e)
+  }
 }
 
 export async function getAllProducts(): Promise<Product[]> {
