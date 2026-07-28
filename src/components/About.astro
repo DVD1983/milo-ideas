@@ -1,0 +1,54 @@
+---
+const { id } = Astro.props;
+---
+
+<section id={id} class="py-20 px-5 bg-gradient-to-b from-gray-50 to-white max-md:py-16 max-md:px-4">
+  <div class="max-w-[1200px] mx-auto px-5">
+    <h2 class="text-center text-4xl font-black text-black mb-10 tracking-wide max-md:text-2xl after:block after:w-[70px] after:h-1 after:bg-gradient-to-r after:from-gray-400 after:via-black after:to-gray-400 after:mx-auto after:mt-3 after:rounded-sm scroll-reveal">
+      Sobre Nosotros
+    </h2>
+    <div class="max-w-[850px] mx-auto">
+      <p class="text-left font-body text-lg font-medium leading-[1.9] text-gray-600 mb-6 max-md:text-center">
+        En <strong class="text-black">Milo Ideas</strong> somos distribuidores mayoristas de indumentaria y accesorios para mascotas. Fabricamos y distribuimos productos de calidad premium porque en Milo amamos como vos a tus mascotas.
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-8">
+        <div class="text-center p-6 bg-white rounded-2xl shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 scroll-reveal" style="animation-delay: 0.1s">
+          <div class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 transition-transform duration-300 hover:scale-110">
+            <i class="fas fa-truck icon-gold text-xl"></i>
+          </div>
+          <h3 class="font-body font-bold text-gray-800 mb-2">Envíos a todo el país</h3>
+          <p class="font-body text-sm text-gray-500">Coordinamos envíos a cualquier localidad del país.</p>
+        </div>
+        <div class="text-center p-6 bg-white rounded-2xl shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 scroll-reveal" style="animation-delay: 0.2s">
+          <div class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 transition-transform duration-300 hover:scale-110">
+            <i class="fas fa-tag icon-gold text-xl"></i>
+          </div>
+          <h3 class="font-body font-bold text-gray-800 mb-2">Precios mayoristas</h3>
+          <p class="font-body text-sm text-gray-500">Precios especiales para locales y revendedores.</p>
+        </div>
+        <div class="text-center p-6 bg-white rounded-2xl shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 scroll-reveal" style="animation-delay: 0.3s">
+          <div class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 transition-transform duration-300 hover:scale-110">
+            <i class="fas fa-heart icon-gold text-xl"></i>
+          </div>
+          <h3 class="font-body font-bold text-gray-800 mb-2">Calidad premium</h3>
+          <p class="font-body text-sm text-gray-500">Productos seleccionados con los mejores materiales.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .icon-gold {
+    background: linear-gradient(135deg, #B8860B, #FFD700, #D4AF37, #B8860B);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: iconShimmer 6s ease-in-out infinite;
+  }
+  @keyframes iconShimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+</style>

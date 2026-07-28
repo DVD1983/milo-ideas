@@ -1,0 +1,58 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Products from '../components/Products.astro';
+import Gallery from '../components/Gallery.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+import WhatsappFloat from '../components/WhatsappFloat.astro';
+---
+
+<Layout>
+  <Navbar />
+  <Hero id="inicio" />
+  <About id="nosotros" />
+  <Products id="productos" />
+  <Gallery id="galeria" />
+  <Contact id="contacto" />
+  <Footer />
+  <WhatsappFloat />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Milo Ideas",
+    "description": "Distribuidores mayoristas de indumentaria y accesorios para mascotas. Ropa, camas y accesorios de calidad premium.",
+    "url": "https://milo-ideas.vercel.app",
+    "image": "https://milo-ideas.vercel.app/images/image_background.jpg",
+    "telephone": "+5491131628169",
+    "areaServed": {
+      "@type": "Country",
+      "name": "Argentina"
+    },
+    "priceRange": "$$",
+    "sameAs": [
+      "https://www.instagram.com/ideasmilo/"
+    ]
+  })} />
+</Layout>
+
+<script>
+  import { initCarousel } from '../scripts/carousel';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initCarousel();
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+  });
+</script>

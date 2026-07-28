@@ -1,0 +1,68 @@
+---
+import { getAllSlides } from '../lib/storage';
+
+const slides = await getAllSlides();
+const { id } = Astro.props;
+---
+
+<section id={id} class="py-20 px-5 bg-gradient-to-b from-gray-100 to-gray-50 max-md:py-16 max-md:px-4">
+  <div class="max-w-[1200px] mx-auto px-5">
+    <h2 class="text-center text-4xl font-black text-black mb-10 tracking-wide max-md:text-2xl after:block after:w-[70px] after:h-1 after:bg-gradient-to-r after:from-gray-400 after:via-black after:to-gray-400 after:mx-auto after:mt-3 after:rounded-sm scroll-reveal">
+      Galería
+    </h2>
+    <div class="relative max-w-[900px] mx-auto overflow-hidden rounded-2xl shadow-xl carousel-container scroll-reveal" id="carouselContainer">
+      <div class="flex transition-transform duration-500 ease-in-out" id="carouselTrack">
+        {slides.length > 0 ? slides.map((slide) => (
+          <div class="min-w-full relative">
+            <img src={slide.image} alt={slide.title} class="w-full h-[450px] max-md:h-[280px] object-contain" loading="lazy" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+              <p class="font-logo text-2xl font-bold drop-shadow-lg max-md:text-lg gallery-gold-text">{slide.title}</p>
+              <p class="font-body text-sm font-semibold opacity-90 drop-shadow max-md:text-xs">{slide.subtitle}</p>
+            </div>
+          </div>
+        )) : (
+          <div class="min-w-full relative flex items-center justify-center h-[450px] max-md:h-[280px] bg-gray-200">
+            <p class="text-gray-400 text-lg">No hay slides configurados</p>
+          </div>
+        )}
+      </div>
+      {slides.length > 1 && (
+        <>
+          <button class="absolute top-1/2 -translate-y-1/2 left-3 bg-white/90 border-none w-11 h-11 rounded-full text-lg text-black cursor-pointer z-10 transition-all duration-300 hover:bg-white hover:scale-110 shadow-md" id="prevBtn" aria-label="Slide anterior">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="absolute top-1/2 -translate-y-1/2 right-3 bg-white/90 border-none w-11 h-11 rounded-full text-lg text-black cursor-pointer z-10 transition-all duration-300 hover:bg-white hover:scale-110 shadow-md" id="nextBtn" aria-label="Siguiente slide">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </>
+      )}
+    </div>
+    {slides.length > 1 && (
+      <div class="flex justify-center gap-2.5 mt-5" id="carouselDots"></div>
+    )}
+  </div>
+</section>
+
+<style>
+  .gallery-gold-icon {
+    background: linear-gradient(135deg, #B8860B, #FFD700, #D4AF37, #B8860B);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: galleryShimmer 6s ease-in-out infinite;
+  }
+  .gallery-gold-text {
+    background: linear-gradient(135deg, #B8860B, #FFD700, #D4AF37, #B8860B);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: galleryShimmer 6s ease-in-out infinite;
+  }
+  @keyframes galleryShimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+</style>

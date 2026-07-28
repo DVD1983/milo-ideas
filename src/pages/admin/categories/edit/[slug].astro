@@ -1,0 +1,115 @@
+---
+import AdminLayout from '../../../../layouts/AdminLayout.astro';
+import { getCategoryBySlug } from '../../../../lib/storage';
+
+const { slug } = Astro.params;
+const category = slug ? await getCategoryBySlug(slug) : null;
+
+if (!category) {
+  return Astro.redirect('/admin/categories');
+}
+---
+
+<AdminLayout title={`Editar ${category.name} - Milo Ideas Admin`}>
+  <div class="mb-8">
+    <a href="/admin/categories" class="text-sm text-gray-400 hover:text-black transition-colors">
+      <i class="fas fa-arrow-left mr-1"></i> Volver a categorías
+    </a>
+    <h1 class="text-2xl font-bold text-gray-800 mt-2">Editar Categoría</h1>
+  </div>
+
+  <div class="card max-w-2xl">
+    <form id="categoryForm" class="flex flex-col gap-5">
+      <input type="hidden" id="originalSlug" value={category.slug} />
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label for="name" class="block text-sm font-semibold text-gray-600 mb-1.5">Nombre *</label>
+          <input type="text" id="name" name="name" required class="input-field" value={category.name} />
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-600 mb-1.5">Slug</label>
+          <input type="text" class="input-field bg-gray-50" value={category.slug} disabled />
+          <p class="text-xs text-gray-400 mt-1">No se puede cambiar</p>
+        </div>
+      </div>
+
+      <div>
+        <label for="description" class="block text-sm font-semibold text-gray-600 mb-1.5">Descripción</label>
+        <textarea id="description" name="description" rows="3" class="input-field">{category.description}</textarea>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label for="image" class="block text-sm font-semibold text-gray-600 mb-1.5">URL de imagen</label>
+          <input type="text" id="image" name="image" class="input-field" value={category.image} />
+          <div id="imagePreview" class="mt-2">
+            <img src={category.image} alt="preview" class="w-16 h-16 rounded-xl object-cover border border-gray-200" />
+          </div>
+        </div>
+        <div>
+          <label for="gradient" class="block text-sm font-semibold text-gray-600 mb-1.5">Gradient CSS</label>
+          <input type="text" id="gradient" name="gradient" class="input-field" value={category.gradient} />
+          <p class="text-xs text-gray-400 mt-1">Dejar vacío para usar gradient por defecto</p>
+        </div>
+      </div>
+
+      <p id="errorMsg" class="text-red-500 text-sm hidden"></p>
+
+      <div class="flex gap-3 pt-2">
+        <button type="submit" class="btn-primary">Guardar cambios</button>
+        <a href="/admin/categories" class="btn-secondary">Cancelar</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const imageUrl = document.getElementById('image');
+    const imagePreview = document.getElementById('imagePreview');
+    const previewImg = imagePreview.querySelector('img');
+
+    imageUrl.addEventListener('input', () => {
+      if (imageUrl.value) {
+        previewImg.src = imageUrl.value;
+        imagePreview.classList.remove('hidden');
+      } else {
+        imagePreview.classList.add('hidden');
+      }
+    });
+
+    document.getElementById('categoryForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errorMsg = document.getElementById('errorMsg');
+      errorMsg.classList.add('hidden');
+
+      const originalSlug = document.getElementById('originalSlug').value;
+
+      const data = {
+        name: document.getElementById('name').value.trim(),
+        description: document.getElementById('description').value.trim(),
+        image: imageUrl.value.trim() || 'https://placehold.co/400x400/ccc/ffffff?text=Categoria',
+        gradient: document.getElementById('gradient').value.trim() || 'linear-gradient(135deg, #fff1f1, #ffc8c8)',
+      };
+
+      try {
+        const res = await fetch(`/api/categories/${originalSlug}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+
+        if (res.ok) {
+          showToast('Categoría actualizada', 'success');
+          setTimeout(() => window.location.href = '/admin/categories', 500);
+        } else {
+          const err = await res.json();
+          errorMsg.textContent = err.error || 'Error al actualizar la categoría';
+          errorMsg.classList.remove('hidden');
+        }
+      } catch {
+        errorMsg.textContent = 'Error de conexión';
+        errorMsg.classList.remove('hidden');
+      }
+    });
+  </script>
+</AdminLayout>

@@ -1,0 +1,297 @@
+{
+  "categories": [
+    {
+      "slug": "ropa",
+      "name": "Ropa para Mascotas",
+      "image": "/images/ropa1.jpeg",
+      "description": "Camisetas, suéteres, vestidos, bandanas y trajes para perros y gatos. Diseños exclusivos y tejidos de alta calidad.",
+      "gradient": "linear-gradient(135deg, #fff1f1, #ffc8c8)"
+    },
+    {
+      "slug": "camas",
+      "name": "Camas para Mascotas",
+      "image": "/images/cama.jpeg",
+      "description": "Camas caverna, camas-red, mantas, almohadas y hamacas. Confort y descanso para tu mascota.",
+      "gradient": "linear-gradient(135deg, #f0fdf4, #bbf7d0)"
+    },
+    {
+      "slug": "bolsos",
+      "name": "Bolsos",
+      "image": "/images/cartera2.jpeg",
+      "description": "Bolsos y mochilas para transportar a tu mascota con estilo y comodidad.",
+      "gradient": "linear-gradient(135deg, #fffbeb, #fde68a)"
+    }
+  ],
+  "carouselSlides": [
+    {
+      "id": "slide-ropa",
+      "image": "/images/ropa-coleccion.jpeg",
+      "title": "Colección de Ropa",
+      "subtitle": "Camisetas, suéteres, vestidos y más",
+      "order": 1
+    },
+    {
+      "id": "slide-camas",
+      "image": "/images/camas-hamacas.jpeg",
+      "title": "perrito",
+      "subtitle": "Cavernas, donut, hamacas y más",
+      "order": 2
+    },
+    {
+      "id": "slide-bolsos",
+      "image": "/images/bolsos-carrusel.jpeg",
+      "title": "Bolsos",
+      "subtitle": "Transportá a tu mascota con estilo",
+      "order": 3
+    },
+    {
+      "id": "slide-nuevos",
+      "image": "/images/nuevos-ingresos.jpeg",
+      "title": "Nuevos Ingresos",
+      "subtitle": "Descubrí lo último en moda mascota",
+      "order": 4
+    }
+  ],
+  "products": [
+    {
+      "id": "camiseta-basica-perro",
+      "name": "Camiseta Básica Perro",
+      "description": "Camiseta de algodón 100% para perros. Diseño minimalista, ideal para uso diario. Disponible en varios talles.",
+      "specs": [
+        "Algodón 100%",
+        "XS a XL",
+        "Lavable a máquina",
+        "Colores: azul, gris, rosa"
+      ],
+      "price": 0,
+      "image": "https://placehold.co/400x400/fff1f1/ef4444?text=Camiseta+Perro",
+      "categorySlug": "ropa",
+      "stock": 150
+    },
+    {
+      "id": "sueter-acrilico-perro",
+      "name": "Suéter Acrílico Perro",
+      "description": "Suéter tejido a mano en acrílico premium. Perfecto para las épocas frías. Cálido y cómodo.",
+      "specs": [
+        "Acrílico premium",
+        "Talles S a XXL",
+        "Tejido a mano",
+        "Antialérgico"
+      ],
+      "price": 0,
+      "image": "https://placehold.co/400x400/fff1f1/ef4444?text=Sueter+Perro",
+      "categorySlug": "ropa",
+      "stock": 80
+    },
+    {
+      "id": "vestido-princesa-gato",
+      "name": "Vestido Princesa Gato",
+      "description": "Vestido con volados para gatas. Tela liviana y flexible que no molesta al caminar.",
+      "specs": [
+        "Poliéster suave",
+        "Talle único",
+        "Cierre velcro",
+        "Fácil de poner"
+      ],
+      "price": 0,
+      "image": "https://placehold.co/400x400/fff1f1/ef4444?text=Vestido+Gato",
+      "categorySlug": "ropa",
+      "stock": 60
+    },
+    {
+      "id": "bandana-tricolor-perro",
+      "name": "Bandana Tricolor Perro",
+      "description": "Bandana con estampado tricolor. Se ajusta al cuello con velcro. Diseño exclusivo Milo Ideas.",
+      "specs": [
+        "Algodón estampado",
+        "Ajustable con velcro",
+        "3 diseños disponibles",
+        "XS a L"
+      ],
+      "price": 0,
+      "image": "https://placehold.co/400x400/fff1f1/ef4444?text=Bandana+Perro",
+      "categorySlug": "ropa",
+      "stock": 200
+    },
+    {
+      "id": "traje-superheroe-perro",
+      "name": "Traje Superhéroe Perro",
+      "description": "Disfraz de superhéroe para perros. Incluye capa con velcro. Perfecto para fotos y eventos.",
+      "specs": [
+        "Poliéster + nylon",
+        "Talles S a L",
+        "Capa desmontable",
+        "Con velcro"
+      ],
+      "price": 0,
+      "image": "https://placehold.co/400x400/fff1f1/ef4444?text=Traje+Perro",
+      "categorySlug": "ropa",
+      "stock": 40
+    },
+    {
+      "id": "campera-cuero-perro",
+      "name": "Campera de Cuero Perro",
+      "description": "Campera estilo cuero sintético forrada internamente. Elegante y abrigada para paseos nocturnos.",
+      "specs": [
+        "Cuero sintético",
+        "Forro polar",
+        "Talles S a XL",
+        "Cierre con cremallera"
+      ],
+      "price": 0,
+      "image": "https://placehold.co/400x400/fff1f1/ef4444?text=Campera+Perro",
+      "categorySlug": "ropa",
+      "stock": 35
+    },
+    {
+      "id": "cama-red-elevada",
+      "name": "Cama Red Elevada",
+      "description": "Cama tipo hamaca elevada con estructura de metal. Ideal para verano, mantiene a la mascota fresca.",
+      "specs": [
+        "Estructura metálica",
+        "Tela mesh transpirable",
+        "Plegable",
+        "Capacidad: 15 kg"
+      ],
+      "price": 0,
+      "image": "https://placehold.co/400x400/faf5ff/a855f7?text=Cama+Red",
+      "categorySlug": "camas",
+      "stock": 30
+    },
+    {
+      "id": "manta-polar-personalizada",
+      "name": "Manta Polar Personalizada",
+      "description": "Manta de polar suave con bordado personalizable. Ideal para regalos y souvenirs.",
+      "specs": [
+        "Polar 100%",
+        "100x150 cm",
+        "Bordado incluido",
+        "Lavable a máquina"
+      ],
+      "price": 0,
+      "image": "https://placehold.co/400x400/faf5ff/a855f7?text=Manta+Polar",
+      "categorySlug": "camas",
+      "stock": 100
+    },
+    {
+      "id": "almohada-ortopedica",
+      "name": "Almohada Ortopédica",
+      "description": "Almohada con espuma viscoelástica que se adapta al cuerpo. Ideal para mascotas con problemas articulares.",
+      "specs": [
+        "Espuma viscoelástica",
+        "Funda desmontable",
+        "50x40x8 cm",
+        "Antibacteriana"
+      ],
+      "price": 0,
+      "image": "https://placehold.co/400x400/faf5ff/a855f7?text=Almohada",
+      "categorySlug": "camas",
+      "stock": 50
+    },
+    {
+      "id": "hamaca-sofa-ventana",
+      "name": "Hamaca Sofá Ventana",
+      "description": "Hamaca que se instala en la ventana con ventosas. El lugar favorito de tu gato para observar.",
+      "specs": [
+        "Resistente a 20 kg",
+        "4 ventosas extrafuertes",
+        "Tela lavable",
+        "45x25 cm"
+      ],
+      "price": 0,
+      "image": "https://placehold.co/400x400/faf5ff/a855f7?text=Hamaca+Ventana",
+      "categorySlug": "camas",
+      "stock": 70
+    },
+    {
+      "id": "correa-retractil-premium",
+      "name": "Correa Retráctil Premium",
+      "description": "Correa retráctil con freno automático y cinta reflectante. Comodidad para paseos largos.",
+      "specs": [
+        "5 metros",
+        "Freno automático",
+        "Cinta reflectante",
+        "Agarre ergonómico"
+      ],
+      "price": 0,
+      "image": "https://placehold.co/400x400/fffbeb/f59e0b?text=Correa+Retractil",
+      "categorySlug": "bolsos",
+      "stock": 120
+    },
+    {
+      "id": "collar-led-recargable",
+      "name": "Collar LED Recargable",
+      "description": "Collar con luz LED para paseos nocturnos. Recargable por USB. 3 modos de iluminación.",
+      "specs": [
+        "LED recargable USB",
+        "3 modos",
+        "Impermeable IPX4",
+        "Ajustable 30-70 cm"
+      ],
+      "price": 0,
+      "image": "https://placehold.co/400x400/fffbeb/f59e0b?text=Collar+LED",
+      "categorySlug": "bolsos",
+      "stock": 90
+    },
+    {
+      "id": "mochila-transparente-gato",
+      "name": "Mochila Transparente Gato",
+      "description": "Mochila transportadora con burbuja transparente. Ventilación lateral y correa de seguridad interna.",
+      "specs": [
+        "Policarbonato",
+        "Ventilación lateral",
+        "Cap: 8 kg",
+        "Certificada IATA"
+      ],
+      "price": 0,
+      "image": "https://placehold.co/400x400/fffbeb/f59e0b?text=Mochila+Gato",
+      "categorySlug": "bolsos",
+      "stock": 25
+    },
+    {
+      "id": "bandana-denim-perro",
+      "name": "Bandana Denim Perro",
+      "description": "Bandana de jean con bordado personalizable. Estilo casual para tu mascota.",
+      "specs": [
+        "Denim lavable",
+        "Bordado a elección",
+        "Ajustable",
+        "3 tamaños"
+      ],
+      "price": 0,
+      "image": "https://placehold.co/400x400/fffbeb/f59e0b?text=Bandana+Denim",
+      "categorySlug": "bolsos",
+      "stock": 150
+    },
+    {
+      "id": "transporter-rigido-viaje",
+      "name": "Transporter Rígido Viaje",
+      "description": "Transporter rígido aprobado por aerolíneas. Puertas laterales y superior. Rejilla de ventilación.",
+      "specs": [
+        "Aprobado IATA",
+        "Puertas duales",
+        "Hasta 10 kg",
+        "PP resistente"
+      ],
+      "price": 0,
+      "image": "https://placehold.co/400x400/fffbeb/f59e0b?text=Transporter",
+      "categorySlug": "bolsos",
+      "stock": 20
+    },
+    {
+      "id": "arnes-anti-tiron-perro",
+      "name": "Arnés Anti Tirón Perro",
+      "description": "Arnés ajustable con distribución de presión para evitar tirones. Ideal para entrenamiento.",
+      "specs": [
+        "Nylon reforzado",
+        "Ajuste en 5 puntos",
+        "Aros laterales",
+        "XS a XL"
+      ],
+      "price": 0,
+      "image": "https://placehold.co/400x400/fffbeb/f59e0b?text=Arnes+Perro",
+      "categorySlug": "bolsos",
+      "stock": 85
+    }
+  ]
+}

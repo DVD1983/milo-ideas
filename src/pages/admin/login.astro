@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar Sesión - Milo Ideas Admin</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body class="font-[Quicksand] min-h-screen bg-gradient-to-br from-gray-100 via-white to-gray-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-3xl shadow-xl border border-gray-200 p-10 w-full max-w-md">
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-logo font-extrabold" style="font-family: 'Baloo 2', sans-serif;">
+        <span class="text-black">Milo Ideas</span>
+      </h1>
+      <p class="text-gray-500 mt-2">Panel de administración</p>
+    </div>
+
+    <form id="loginForm" class="flex flex-col gap-5">
+      <div>
+        <label for="username" class="block text-sm font-semibold text-gray-600 mb-1.5">Usuario</label>
+        <input type="text" id="username" name="username" required class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-400 focus:border-gray-400 outline-none transition-all bg-white" placeholder="Ingresá tu usuario" />
+      </div>
+      <div>
+        <label for="password" class="block text-sm font-semibold text-gray-600 mb-1.5">Contraseña</label>
+        <input type="password" id="password" name="password" required class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-400 focus:border-gray-400 outline-none transition-all bg-white" placeholder="Ingresá tu contraseña" />
+      </div>
+      <button type="submit" class="w-full bg-black text-white px-6 py-2.5 rounded-full font-semibold hover:bg-gray-800 transition-all hover:shadow-lg hover:-translate-y-0.5 text-lg">
+        Ingresar
+      </button>
+    </form>
+
+    <a href="/" class="block text-center text-sm text-gray-400 hover:text-black mt-6 transition-colors">
+      <i class="fas fa-arrow-left mr-1"></i> Volver al sitio
+    </a>
+  </div>
+
+  <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+
+    function showToast(message, type = 'error') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle' };
+      const colors = { success: 'bg-black', error: 'bg-red-500' };
+      toast.className = `pointer-events-auto ${colors[type]} text-white px-5 py-3 rounded-xl shadow-lg flex items-center gap-3 transition-all duration-300`;
+      toast.innerHTML = `<i class="fas ${icons[type]}"></i><span class="text-sm font-medium">${message}</span>`;
+      container.appendChild(toast);
+      requestAnimationFrame(() => { toast.style.transform = 'translateX(0)'; toast.style.opacity = '1'; });
+      setTimeout(() => { toast.style.transform = 'translateX(100%)'; toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const data = { username: document.getElementById('username').value, password: document.getElementById('password').value };
+      const btn = form.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Ingresando...';
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+
+        if (!res.ok) {
+          const err = await res.json();
+          showToast(err.detail || err.error || 'Error al iniciar sesión', 'error');
+          btn.disabled = false;
+          btn.innerHTML = 'Ingresar';
+          return;
+        }
+
+        window.location.href = '/admin';
+      } catch {
+        showToast('Error de conexión', 'error');
+        btn.disabled = false;
+        btn.innerHTML = 'Ingresar';
+      }
+    });
+  </script>
+</body>
+</html>

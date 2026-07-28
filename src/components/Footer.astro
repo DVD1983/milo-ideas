@@ -1,0 +1,51 @@
+<footer class="bg-black text-white px-5 py-12 font-body">
+  <div class="max-w-[1200px] mx-auto px-5">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-8">
+      <div>
+        <h4 class="font-logo text-lg font-bold mb-4 footer-gold-text">Milo Ideas</h4>
+        <p class="text-sm text-gray-400 leading-relaxed">Distribuidor mayorista de indumentaria y accesorios para mascotas. Calidad premium para tu local.</p>
+      </div>
+      <div>
+        <h4 class="font-logo text-lg font-bold mb-4 footer-gold-text">Navegación</h4>
+        <ul class="list-none p-0 m-0 space-y-2">
+          <li><a href="/#inicio" class="text-sm footer-gold-text no-underline transition-colors">Inicio</a></li>
+          <li><a href="/#nosotros" class="text-sm footer-gold-text no-underline transition-colors">Nosotros</a></li>
+          <li><a href="/#productos" class="text-sm footer-gold-text no-underline transition-colors">Catálogo</a></li>
+          <li><a href="/#contacto" class="text-sm footer-gold-text no-underline transition-colors">Contacto</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-logo text-lg font-bold mb-4 footer-gold-text">Redes</h4>
+        <div class="flex gap-4">
+          <a href="https://www.instagram.com/ideasmilo/" target="_blank" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center footer-gold-text transition-all no-underline hover:bg-white/20" aria-label="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://wa.me/5491131628169" target="_blank" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center footer-gold-text transition-all no-underline hover:bg-white/20" aria-label="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-xs text-gray-500">&copy; 2026 <span class="font-bold footer-gold-text">Milo Ideas</span>. Todos los derechos reservados.</p>
+      <a href="/#inicio" class="text-xs footer-gold-text no-underline flex items-center gap-1.5">
+        <i class="fas fa-arrow-up text-[10px]"></i> Volver arriba
+      </a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer-gold-text {
+    background: linear-gradient(135deg, #B8860B, #FFD700, #D4AF37, #B8860B);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: footerShimmer 6s ease-in-out infinite;
+  }
+  @keyframes footerShimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+</style>

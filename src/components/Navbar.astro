@@ -1,0 +1,103 @@
+<nav
+  id="main-nav"
+  class="fixed top-0 left-0 w-full bg-white z-50 px-[30px] py-1 flex items-center justify-between max-md:px-4 transition-shadow duration-300"
+>
+  <div class="flex items-center gap-4">
+    <a href="/#inicio" class="flex items-center gap-4 no-underline">
+      <img
+        src="/logo/logo-milo.jpeg"
+        alt="Milo Ideas Logo"
+        class="h-[130px] w-[150px] object-contain max-md:h-[80px] max-md:w-[95px]"
+      />
+      <div class="flex flex-col">
+        <span class="font-logo text-3xl font-medium text-gray-900 max-md:text-xl">Milo Ideas</span>
+        <span class="mayorista-badge text-xs font-body font-bold px-3 py-0.5 rounded-full w-fit">Mayorista</span>
+      </div>
+    </a>
+  </div>
+
+  <button class="hidden max-md:block bg-none border-none text-xl text-gray-800 cursor-pointer" id="menuToggle" aria-label="Menú" aria-expanded="false">
+    <i class="fas fa-bars" id="menuIcon"></i>
+  </button>
+
+  <ul class="flex gap-6 list-none max-md:hidden max-md:flex-col max-md:absolute max-md:top-full max-md:left-0 max-md:w-full max-md:bg-white max-md:p-5 max-md:shadow-lg max-md:text-center max-md:rounded-b-xl max-md:border-t max-md:border-gray-100 max-md:opacity-0 max-md:-translate-y-2 max-md:pointer-events-none max-md:transition-all max-md:duration-300 max-md:open:max-md:opacity-100 max-md:open:max-md:translate-y-0 max-md:open:max-md:pointer-events-auto" id="navLinks">
+    <li><a href="/#inicio" class="nav-link font-body font-semibold text-base text-gray-600 no-underline transition-colors duration-300 hover:text-black relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[2px] after:bg-black after:transition-[width] after:duration-300 hover:after:w-full">Inicio</a></li>
+    <li><a href="/#nosotros" class="nav-link font-body font-semibold text-base text-gray-600 no-underline transition-colors duration-300 hover:text-black relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[2px] after:bg-black after:transition-[width] after:duration-300 hover:after:w-full">Nosotros</a></li>
+    <li><a href="/#productos" class="nav-link font-body font-semibold text-base text-gray-600 no-underline transition-colors duration-300 hover:text-black relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[2px] after:bg-black after:transition-[width] after:duration-300 hover:after:w-full">Catálogo</a></li>
+    <li><a href="/#contacto" class="nav-link font-body font-semibold text-base text-gray-600 no-underline transition-colors duration-300 hover:text-black relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[2px] after:bg-black after:transition-[width] after:duration-300 hover:after:w-full">Contacto</a></li>
+  </ul>
+</nav>
+
+<script>
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+  const menuIcon = document.getElementById('menuIcon');
+  const nav = document.getElementById('main-nav');
+
+  if (menuToggle && navLinks) {
+    menuToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      menuIcon.className = isOpen ? 'fas fa-times' : 'fas fa-bars';
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    navLinks.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        menuIcon.className = 'fas fa-bars';
+        menuToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  if (nav) {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        nav.classList.add('shadow-[0_2px_20px_rgba(0,0,0,0.08)]');
+      } else {
+        nav.classList.remove('shadow-[0_2px_20px_rgba(0,0,0,0.08)]');
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+  }
+
+  const sections = document.querySelectorAll('section[id]');
+  const navLinksAll = document.querySelectorAll('.nav-link');
+  if (sections.length && navLinksAll.length) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          navLinksAll.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === `/#${id}`) {
+              link.classList.add('text-black');
+              link.classList.remove('text-gray-600');
+            } else {
+              link.classList.remove('text-black');
+              link.classList.add('text-gray-600');
+            }
+          });
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+
+    sections.forEach(section => observer.observe(section));
+  }
+</script>
+
+<style is:global>
+  html {
+    scroll-padding-top: 120px;
+  }
+  .mayorista-badge {
+    background: linear-gradient(135deg, #B8860B, #FFD700, #D4AF37, #B8860B);
+    background-size: 200% 200%;
+    animation: mayoristaShimmer 6s ease-in-out infinite;
+  }
+  @keyframes mayoristaShimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+</style>

@@ -1,0 +1,106 @@
+---
+interface Props {
+  title?: string;
+}
+const { title = 'Panel Admin - Milo Ideas' } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body class="font-[Quicksand] bg-gray-50 text-gray-700 min-h-screen">
+  <div class="flex min-h-screen">
+    <nav class="w-64 bg-white border-r border-gray-200 p-6 flex flex-col gap-6 shrink-0">
+      <a href="/admin" class="text-2xl font-logo font-extrabold" style="font-family: 'Baloo 2', sans-serif;">
+        <span class="text-black">Milo Ideas</span>
+        <span class="text-sm text-gray-400 font-body font-normal ml-2">Admin</span>
+      </a>
+      <div class="flex flex-col gap-1">
+        <a href="/admin" class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-colors duration-200 {Astro.url.pathname === '/admin' ? 'bg-gray-100 text-black font-semibold' : 'text-gray-600 hover:bg-gray-100'}">
+          <i class="fas fa-boxes w-5 text-center"></i>
+          Productos
+        </a>
+        <a href="/admin/categories" class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-colors duration-200 {Astro.url.pathname.startsWith('/admin/categories') ? 'bg-gray-100 text-black font-semibold' : 'text-gray-600 hover:bg-gray-100'}">
+          <i class="fas fa-tags w-5 text-center"></i>
+          Categorías
+        </a>
+        <a href="/admin/carousel" class="flex items-center gap-3 px-4 py-2.5 rounded-xl transition-colors duration-200 {Astro.url.pathname.startsWith('/admin/carousel') ? 'bg-gray-100 text-black font-semibold' : 'text-gray-600 hover:bg-gray-100'}">
+          <i class="fas fa-images w-5 text-center"></i>
+          Galería
+        </a>
+        <a href="/" target="_blank" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-600 hover:bg-gray-100 transition-colors duration-200">
+          <i class="fas fa-external-link-alt w-5 text-center"></i>
+          Ver sitio
+        </a>
+      </div>
+      <div class="mt-auto pt-6 border-t border-gray-200">
+        <button id="logoutBtn" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-red-500 hover:bg-red-50 transition-colors duration-200 w-full">
+          <i class="fas fa-sign-out-alt w-5 text-center"></i>
+          Cerrar sesión
+        </button>
+      </div>
+    </nav>
+    <main class="flex-1 p-8 relative">
+      <slot />
+      <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+    </main>
+  </div>
+
+  <script>
+    document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      window.location.href = '/admin/login';
+    });
+
+    window.showToast = (message, type = 'success') => {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      const toast = document.createElement('div');
+      const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', info: 'fa-info-circle' };
+      const colors = { success: 'bg-black', error: 'bg-red-500', info: 'bg-gray-600' };
+      toast.className = `pointer-events-auto ${colors[type] || colors.info} text-white px-5 py-3 rounded-xl shadow-lg flex items-center gap-3 transition-all duration-300 translate-x-full opacity-0`;
+      toast.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i><span class="text-sm font-medium">${message}</span>`;
+      container.appendChild(toast);
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-x-full', 'opacity-0');
+        toast.classList.add('translate-x-0', 'opacity-100');
+      });
+      setTimeout(() => {
+        toast.classList.remove('translate-x-0', 'opacity-100');
+        toast.classList.add('translate-x-full', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    };
+  </script>
+</body>
+</html>
+
+<style is:global>
+  .btn-primary {
+    @apply bg-black text-white px-6 py-2.5 rounded-full font-semibold hover:bg-gray-800 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5;
+  }
+  .btn-secondary {
+    @apply bg-gray-200 text-gray-700 px-6 py-2.5 rounded-full font-semibold hover:bg-gray-300 transition-all duration-200;
+  }
+  .btn-danger {
+    @apply bg-red-500 text-white px-6 py-2.5 rounded-full font-semibold hover:bg-red-600 transition-all duration-200;
+  }
+  .input-field {
+    @apply w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-400 focus:border-gray-400 outline-none transition-all duration-200 bg-white;
+  }
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-gray-100 p-6;
+  }
+  .translate-x-full { transform: translateX(100%); }
+  .translate-x-0 { transform: translateX(0); }
+  .opacity-0 { opacity: 0; }
+  .opacity-100 { opacity: 1; }
+</style>

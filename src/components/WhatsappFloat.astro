@@ -1,0 +1,45 @@
+<a
+  href="https://wa.me/5491131628169?text=Hola,%20quiero%20información%20sobre%20el%20catálogo%20mayorista%20de%20Milo%20Ideas."
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Contactar por WhatsApp"
+  class="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 rounded-full text-white font-body font-bold text-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:scale-105 whatsapp-enter"
+  style="background: rgba(0, 0, 0, 0.25); backdrop-filter: blur(10px); border: 1.5px solid rgba(0, 0, 0, 0.4);"
+>
+  <span class="relative flex h-3 w-3">
+    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+    <span class="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+  </span>
+  <i class="fab fa-whatsapp text-xl whatsapp-icon-gold"></i>
+  <span class="max-md:hidden whatsapp-icon-gold font-extrabold text-base">Consultá precios mayoristas</span>
+</a>
+
+<style>
+  .whatsapp-enter {
+    animation: slideUp 0.5s ease-out 1.5s forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  @keyframes slideUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes whatsappShimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  .whatsapp-gold {
+    background: linear-gradient(135deg, #B8860B, #FFD700, #D4AF37, #B8860B) !important;
+    background-size: 200% 200% !important;
+  }
+  .whatsapp-icon-gold {
+    background: linear-gradient(135deg, #B8860B, #FFD700, #D4AF37, #B8860B);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: whatsappShimmer 6s ease-in-out infinite;
+  }
+</style>

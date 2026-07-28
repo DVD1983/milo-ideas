@@ -1,0 +1,20 @@
+{
+  "name": "milo-ideas",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "@astrojs/tailwind": "^6.0.0",
+    "@astrojs/vercel": "^8.2.11",
+    "@vercel/kv": "^3.0.0",
+    "astro": "^5.0.0",
+    "tailwindcss": "^3.4.0"
+  }
+}

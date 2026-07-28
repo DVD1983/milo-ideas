@@ -1,0 +1,68 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { getAllCategories } from '../../../lib/storage';
+
+const categories = await getAllCategories();
+---
+
+<AdminLayout title="Categorías - Milo Ideas Admin">
+  <div class="flex items-center justify-between mb-8">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-800">Categorías</h1>
+      <p class="text-gray-500 mt-1">{categories.length} categorías</p>
+    </div>
+    <a href="/admin/categories/new" class="bg-black text-white px-6 py-2.5 rounded-full font-semibold hover:bg-gray-800 transition-all hover:shadow-lg hover:-translate-y-0.5 flex items-center gap-2">
+      <i class="fas fa-plus"></i>
+      Nueva categoría
+    </a>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    {categories.map(cat => (
+      <div class="card flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-14 h-14 rounded-xl overflow-hidden shrink-0" style={`background: ${cat.gradient}`}>
+            <img src={cat.image} alt={cat.name} class="w-full h-full object-cover" loading="lazy" />
+          </div>
+          <div class="min-w-0">
+            <p class="font-semibold text-gray-800 truncate">{cat.name}</p>
+            <p class="text-xs text-gray-400">Slug: {cat.slug}</p>
+          </div>
+        </div>
+        <p class="text-sm text-gray-500 line-clamp-2">{cat.description}</p>
+        <div class="flex gap-2 mt-auto pt-2">
+          <a href={`/admin/categories/edit/${cat.slug}`} class="px-3 py-1.5 text-sm rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors">
+            <i class="fas fa-edit"></i> Editar
+          </a>
+          <button class="delete-btn px-3 py-1.5 text-sm rounded-lg bg-red-50 text-red-500 hover:bg-red-100 transition-colors" data-slug={cat.slug} data-name={cat.name}>
+            <i class="fas fa-trash"></i> Eliminar
+          </button>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <script>
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const slug = btn.dataset.slug;
+        const name = btn.dataset.name;
+
+        if (!confirm(`¿Eliminar la categoría "${name}"? Los productos asociados se quedarán sin categoría.`)) return;
+
+        try {
+          const res = await fetch(`/api/categories/${slug}`, { method: 'DELETE' });
+          if (res.ok) {
+            showToast('Categoría eliminada', 'success');
+            setTimeout(() => window.location.reload(), 500);
+          } else {
+            const err = await res.json();
+            showToast(err.error || 'Error al eliminar', 'error');
+          }
+        } catch {
+          showToast('Error de conexión', 'error');
+        }
+      });
+    });
+  </script>
+</AdminLayout>

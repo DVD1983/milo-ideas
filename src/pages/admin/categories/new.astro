@@ -1,0 +1,88 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+---
+
+<AdminLayout title="Nueva Categoría - Milo Ideas Admin">
+  <div class="mb-8">
+    <a href="/admin/categories" class="text-sm text-gray-400 hover:text-black transition-colors">
+      <i class="fas fa-arrow-left mr-1"></i> Volver a categorías
+    </a>
+    <h1 class="text-2xl font-bold text-gray-800 mt-2">Nueva Categoría</h1>
+  </div>
+
+  <div class="card max-w-2xl">
+    <form id="categoryForm" class="flex flex-col gap-5">
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label for="slug" class="block text-sm font-semibold text-gray-600 mb-1.5">Slug *</label>
+          <input type="text" id="slug" name="slug" required class="input-field" placeholder="ej: nueva-categoria" />
+          <p class="text-xs text-gray-400 mt-1">Identificador único (sin espacios)</p>
+        </div>
+        <div>
+          <label for="name" class="block text-sm font-semibold text-gray-600 mb-1.5">Nombre *</label>
+          <input type="text" id="name" name="name" required class="input-field" placeholder="Ej: Nueva Categoría" />
+        </div>
+      </div>
+
+      <div>
+        <label for="description" class="block text-sm font-semibold text-gray-600 mb-1.5">Descripción</label>
+        <textarea id="description" name="description" rows="3" class="input-field" placeholder="Descripción de la categoría..."></textarea>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label for="image" class="block text-sm font-semibold text-gray-600 mb-1.5">URL de imagen</label>
+          <input type="text" id="image" name="image" class="input-field" placeholder="https://... o ruta /images/..." />
+        </div>
+        <div>
+          <label for="gradient" class="block text-sm font-semibold text-gray-600 mb-1.5">Gradient CSS</label>
+          <input type="text" id="gradient" name="gradient" class="input-field" placeholder="linear-gradient(...)" />
+          <p class="text-xs text-gray-400 mt-1">Dejar vacío para usar gradient por defecto</p>
+        </div>
+      </div>
+
+      <p id="errorMsg" class="text-red-500 text-sm hidden"></p>
+
+      <div class="flex gap-3 pt-2">
+        <button type="submit" class="btn-primary">Crear categoría</button>
+        <a href="/admin/categories" class="btn-secondary">Cancelar</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('categoryForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errorMsg = document.getElementById('errorMsg');
+      errorMsg.classList.add('hidden');
+
+      const data = {
+        slug: document.getElementById('slug').value.trim(),
+        name: document.getElementById('name').value.trim(),
+        description: document.getElementById('description').value.trim(),
+        image: document.getElementById('image').value.trim() || 'https://placehold.co/400x400/ccc/ffffff?text=Categoria',
+        gradient: document.getElementById('gradient').value.trim() || 'linear-gradient(135deg, #fff1f1, #ffc8c8)',
+      };
+
+      try {
+        const res = await fetch('/api/categories', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+
+        if (res.ok) {
+          showToast('Categoría creada', 'success');
+          setTimeout(() => window.location.href = '/admin/categories', 500);
+        } else {
+          const err = await res.json();
+          errorMsg.textContent = err.error || 'Error al crear la categoría';
+          errorMsg.classList.remove('hidden');
+        }
+      } catch {
+        errorMsg.textContent = 'Error de conexión';
+        errorMsg.classList.remove('hidden');
+      }
+    });
+  </script>
+</AdminLayout>

@@ -1,0 +1,71 @@
+---
+import AdminLayout from '../../../layouts/AdminLayout.astro';
+import { getAllSlides } from '../../../lib/storage';
+
+const slides = await getAllSlides();
+---
+
+<AdminLayout title="Galería - Milo Ideas Admin">
+  <div class="flex items-center justify-between mb-8">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-800">Galería / Carrusel</h1>
+      <p class="text-sm text-gray-400 mt-1">{slides.length} slide{slides.length !== 1 ? 's' : ''}</p>
+    </div>
+    <a href="/admin/carousel/new" class="btn-primary">
+      <i class="fas fa-plus mr-2"></i> Nuevo slide
+    </a>
+  </div>
+
+  {slides.length === 0 ? (
+    <div class="card text-center py-12">
+      <i class="fas fa-images text-4xl text-gray-300 mb-4"></i>
+      <p class="text-gray-400 mb-4">No hay slides en el carrusel</p>
+      <a href="/admin/carousel/new" class="btn-primary">Crear primer slide</a>
+    </div>
+  ) : (
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {slides.map((slide) => (
+        <div class="card">
+          <div class="relative rounded-xl overflow-hidden mb-4 bg-gray-100">
+            <img src={slide.image} alt={slide.title} class="w-full h-48 object-contain" />
+            <span class="absolute top-2 left-2 bg-black/70 text-white text-xs px-2.5 py-1 rounded-full font-semibold">
+              #{slide.order}
+            </span>
+          </div>
+          <h3 class="font-bold text-gray-800 text-lg">{slide.title}</h3>
+          <p class="text-sm text-gray-400 mt-1">{slide.subtitle}</p>
+          <div class="flex gap-2 mt-4">
+            <a href={`/admin/carousel/edit/${slide.id}`} class="btn-secondary text-sm">
+              <i class="fas fa-edit mr-1"></i> Editar
+            </a>
+            <button class="btn-danger text-sm delete-btn" data-id={slide.id} data-title={slide.title}>
+              <i class="fas fa-trash mr-1"></i> Eliminar
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+
+  <script>
+    document.querySelectorAll('.delete-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const id = btn.dataset.id;
+        const title = btn.dataset.title;
+        if (!confirm(`¿Eliminar el slide "${title}"?`)) return;
+
+        try {
+          const res = await fetch(`/api/carousel/${id}`, { method: 'DELETE' });
+          if (res.ok) {
+            showToast('Slide eliminado', 'success');
+            setTimeout(() => window.location.reload(), 500);
+          } else {
+            showToast('Error al eliminar', 'error');
+          }
+        } catch {
+          showToast('Error de conexión', 'error');
+        }
+      });
+    });
+  </script>
+</AdminLayout>

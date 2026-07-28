@@ -1,0 +1,86 @@
+---
+export interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonical?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = 'Milo Ideas - Mayorista de Indumentaria para Mascotas',
+  description = 'Distribuidores mayoristas de indumentaria y accesorios para mascotas. Ropa, camas y accesorios de calidad premium para tu local. Consultá por precios y catálogo completo.',
+  image = '/images/image_background.jpg',
+  canonical,
+  noindex = false,
+} = Astro.props;
+
+const siteUrl = import.meta.env.SITE || 'https://milo-ideas.vercel.app';
+const currentUrl = canonical || `${siteUrl}${Astro.url.pathname}`;
+const absoluteImage = `${siteUrl}${image}`;
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content="mayorista, indumentaria, mascotas, ropa, camas, accesorios, perros, gatos, distribuidor, Milo Ideas, mayorista mascotas, accesorios perros, ropa perros, collares, arneses, camas mascotas, Argentina" />
+    <meta name="author" content="Milo Ideas" />
+    <meta name="theme-color" content="#000000" />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {!noindex && <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />}
+
+    <link rel="canonical" href={currentUrl} />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={absoluteImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Milo Ideas - Mayorista de indumentaria y accesorios para mascotas" />
+    <meta property="og:url" content={currentUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:site_name" content="Milo Ideas" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={absoluteImage} />
+    <meta name="twitter:image:alt" content="Milo Ideas - Mayorista de indumentaria y accesorios para mascotas" />
+
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="preload" as="image" href="/images/image_background.jpg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+  </head>
+  <body class="font-body text-gray-700 scroll-smooth">
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  .scroll-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
