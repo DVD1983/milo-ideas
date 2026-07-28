@@ -22,3 +22,7 @@ Thumbs.db
 
 # Vercel
 .vercel/
+
+# Temp
+page-output.html
+astro-output.log
