@@ -2,36 +2,40 @@
 const { id } = Astro.props;
 ---
 
-<section id={id} class="py-20 px-5 bg-gradient-to-b from-gray-50 to-white text-center max-md:py-16 max-md:px-4">
-  <div class="max-w-[1200px] mx-auto px-5">
+<section id={id} class="relative py-20 px-5 overflow-hidden text-center max-md:py-16 max-md:px-4">
+  <div class="absolute inset-0 bg-[url('/images/ropa1.jpeg')] bg-center bg-cover bg-fixed max-md:bg-scroll"></div>
+  <div class="absolute inset-0 bg-gradient-to-b from-white/80 via-white/70 to-white/80"></div>
+  <div class="max-w-[1200px] mx-auto px-5 relative">
     <h2 class="text-center text-4xl font-black text-black mb-10 tracking-wide max-md:text-2xl after:block after:w-[70px] after:h-1 after:mx-auto after:mt-3 after:rounded-sm scroll-reveal">
       Contacto
     </h2>
     <div class="mx-auto mb-10 h-1 w-[70px] rounded-sm scroll-reveal" style="background: linear-gradient(90deg, #B8860B, #FFD700, #B8860B);"></div>
-    <p class="mb-4 text-gray-600 scroll-reveal">Escribinos para consultar precios mayoristas y recibir el catálogo completo</p>
-    <div class="flex flex-col items-center gap-3 mb-8 scroll-reveal" style="animation-delay: 0.1s">
-      <p class="text-gray-600 font-body text-sm font-semibold">
-        <i class="fas fa-phone mr-1.5 contact-gold-icon"></i>
-        +54 9 11 3162-8169
-      </p>
-    </div>
-    <div class="flex justify-center gap-6 flex-wrap max-md:flex-col max-md:items-center scroll-reveal" style="animation-delay: 0.2s">
-      <a
-        href="https://www.instagram.com/ideasmilo/"
-        target="_blank"
-        class="inline-flex items-center gap-2 px-6 py-2.5 rounded-[60px] font-body font-bold text-sm text-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg max-md:w-full max-md:max-w-[260px] max-md:justify-center"
-        style="background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);"
-      >
-        <i class="fab fa-instagram contact-gold-icon"></i> Instagram
-      </a>
-      <a
-        href="https://wa.me/5491131628169?text=Hola,%20quiero%20información%20sobre%20el%20catálogo%20mayorista%20de%20Milo%20Ideas."
-        target="_blank"
-        class="inline-flex items-center gap-2 px-6 py-2.5 rounded-[60px] font-body font-bold text-sm text-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:bg-green-600 max-md:w-full max-md:max-w-[260px] max-md:justify-center"
-        style="background: #25D366;"
-      >
-        <i class="fab fa-whatsapp contact-gold-icon"></i> WhatsApp
-      </a>
+    <div class="bg-white/60 backdrop-blur-sm rounded-2xl p-8 shadow-sm max-w-[600px] mx-auto">
+      <p class="mb-4 text-gray-700 scroll-reveal font-medium">Escribinos para consultar precios mayoristas y recibir el catálogo completo</p>
+      <div class="flex flex-col items-center gap-3 mb-6 scroll-reveal" style="animation-delay: 0.1s">
+        <p class="text-gray-700 font-body text-sm font-semibold">
+          <i class="fas fa-phone mr-1.5 contact-gold-icon"></i>
+          +54 9 11 3162-8169
+        </p>
+      </div>
+      <div class="flex justify-center gap-6 flex-wrap max-md:flex-col max-md:items-center scroll-reveal" style="animation-delay: 0.2s">
+        <a
+          href="https://www.instagram.com/ideasmilo/"
+          target="_blank"
+          class="inline-flex items-center gap-2 px-6 py-2.5 rounded-[60px] font-body font-bold text-sm text-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg max-md:w-full max-md:max-w-[260px] max-md:justify-center"
+          style="background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);"
+        >
+          <i class="fab fa-instagram contact-gold-icon"></i> Instagram
+        </a>
+        <a
+          href="https://wa.me/5491131628169?text=Hola,%20quiero%20información%20sobre%20el%20catálogo%20mayorista%20de%20Milo%20Ideas."
+          target="_blank"
+          class="inline-flex items-center gap-2 px-6 py-2.5 rounded-[60px] font-body font-bold text-sm text-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:bg-green-600 max-md:w-full max-md:max-w-[260px] max-md:justify-center"
+          style="background: #25D366;"
+        >
+          <i class="fab fa-whatsapp contact-gold-icon"></i> WhatsApp
+        </a>
+      </div>
     </div>
   </div>
 </section>
