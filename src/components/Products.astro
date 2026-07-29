@@ -8,8 +8,10 @@ const { id } = Astro.props;
 const productCountByCategory = (slug: string) => allProducts.filter(p => p.categorySlug === slug).length;
 ---
 
-<section id={id} class="py-20 px-5 bg-white max-md:py-16 max-md:px-4">
-  <div class="max-w-[1200px] mx-auto px-5">
+<section id={id} class="relative py-20 px-5 overflow-hidden max-md:py-16 max-md:px-4">
+  <div class="absolute inset-0 bg-[url('/images/cama-destacada.jpeg')] bg-center bg-cover bg-fixed max-md:bg-scroll"></div>
+  <div class="absolute inset-0 bg-gradient-to-b from-white/80 via-white/70 to-white/80"></div>
+  <div class="max-w-[1200px] mx-auto px-5 relative">
     <h2 class="text-center text-4xl font-black text-black mb-10 tracking-wide max-md:text-2xl after:block after:w-[70px] after:h-1 after:bg-gradient-to-r after:from-gray-400 after:via-black after:to-gray-400 after:mx-auto after:mt-3 after:rounded-sm scroll-reveal">
       Nuestro Catálogo
     </h2>
@@ -19,15 +21,15 @@ const productCountByCategory = (slug: string) => allProducts.filter(p => p.categ
         return (
           <a
             href={`/productos/${cat.slug}`}
-            class="group block rounded-2xl px-5 py-8 text-center shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl relative overflow-hidden no-underline border border-gray-200 scroll-reveal bg-gradient-to-br from-gray-200 to-gray-300"
+            class="group block rounded-2xl px-5 py-8 text-center shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl relative overflow-hidden no-underline border border-white/60 scroll-reveal bg-white/80 backdrop-blur-sm"
             style={`animation-delay: ${i * 0.1}s`}
           >
             <div class="w-36 h-36 mx-auto mb-4 relative z-10 bg-white/70 rounded-2xl flex items-center justify-center p-3 shadow-sm transition-transform duration-300 group-hover:scale-105">
               <img src={cat.image} alt={cat.name} class="block w-full h-full object-contain mix-blend-multiply" />
             </div>
-            <h3 class="font-body text-xl font-bold text-gray-400 mb-1 relative z-10">{cat.name}</h3>
-            <p class="font-body text-sm text-gray-500 leading-relaxed font-medium relative z-10 mb-2">{cat.description}</p>
-            <span class="font-body text-xs text-gray-400 font-semibold relative z-10">{count} producto{count !== 1 ? 's' : ''}</span>
+            <h3 class="font-body text-xl font-bold text-gray-700 mb-1 relative z-10">{cat.name}</h3>
+            <p class="font-body text-sm text-gray-600 leading-relaxed font-medium relative z-10 mb-2">{cat.description}</p>
+            <span class="font-body text-xs text-gray-500 font-semibold relative z-10">{count} producto{count !== 1 ? 's' : ''}</span>
             <div class="mt-3 relative z-10">
               <span class="inline-block px-4 py-1.5 rounded-full text-white font-body font-semibold text-xs transition-all duration-300 group-hover:shadow-md" style="background: linear-gradient(135deg, #B8860B, #FFD700, #D4AF37, #B8860B);">
                 Explorar <i class="fas fa-arrow-right ml-1 text-xs transition-transform duration-300 group-hover:translate-x-1"></i>
