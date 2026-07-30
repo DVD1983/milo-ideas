@@ -4,7 +4,7 @@ import vercel from '@astrojs/vercel';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://milo-ideas.vercel.app',
+  site: 'https://miloideas.com',
   output: 'server',
   adapter: vercel(),
   integrations: [
